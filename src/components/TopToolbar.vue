@@ -3,7 +3,8 @@
     <!-- File actions -->
     <div class="toolbar-group">
       <button @click="newLabel" title="新建标签">新建</button>
-      <button @click="exportPng()" title="导出图片">导出图片</button>
+      <button @click="exportPng()" title="导出 PNG">导出 PNG</button>
+      <button @click="exportPdf()" title="导出 PDF">导出 PDF</button>
     </div>
 
     <div class="toolbar-divider" />
@@ -48,7 +49,25 @@
       <button @click="showPrint = true" title="打印">🖨 打印</button>
     </div>
 
+    <div class="toolbar-divider" />
+
+    <!-- Save template + auth -->
+    <div class="toolbar-group">
+      <button
+        @click="onSaveTemplate"
+        :title="authStore.isLoggedIn ? '保存为模板' : '登录后可保存模板'"
+      >保存模板</button>
+      <template v-if="authStore.isLoggedIn">
+        <UserAvatar />
+      </template>
+      <template v-else>
+        <button @click="showAuth = true">登录</button>
+      </template>
+    </div>
+
     <PrintSettingsModal v-if="showPrint" @close="showPrint = false" />
+    <SaveTemplateModal v-if="showSaveTemplate" @close="showSaveTemplate = false" />
+    <AuthModal v-if="showAuth" @close="showAuth = false" />
   </div>
 </template>
 
@@ -58,20 +77,32 @@ import { useCanvasStore } from '../store/canvas'
 import { useElementStore } from '../store/element'
 import { useSelectionStore } from '../store/selection'
 import { useDataBindingStore } from '../store/dataBinding'
+import { useAuthStore } from '../store/auth'
 import { useExport } from '../composables/useExport'
 import { alignElements } from '../canvas/align'
 import type { AlignDirection } from '../canvas/align'
 import PrintSettingsModal from './PrintSettingsModal.vue'
+import SaveTemplateModal from './SaveTemplateModal.vue'
+import AuthModal from './AuthModal.vue'
+import UserAvatar from './UserAvatar.vue'
 
 const canvasStore = useCanvasStore()
 const elementStore = useElementStore()
 const selectionStore = useSelectionStore()
 const dataBindingStore = useDataBindingStore()
-const { exportPng } = useExport()
+const authStore = useAuthStore()
+const { exportPng, exportPdf } = useExport()
 
 const showPrint = ref(false)
+const showSaveTemplate = ref(false)
+const showAuth = ref(false)
 const canUndo = computed(() => elementStore.past.length > 0)
 const canRedo = computed(() => elementStore.future.length > 0)
+
+function onSaveTemplate() {
+  if (authStore.isLoggedIn) showSaveTemplate.value = true
+  else showAuth.value = true
+}
 const zoomPercent = computed(() => Math.round(canvasStore.viewport.zoom * 100))
 const selectedIds = computed(() => selectionStore.selectedIds)
 const previewMode = computed(() => dataBindingStore.previewMode)

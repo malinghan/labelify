@@ -57,6 +57,7 @@ export function useElementFactory() {
           type: 'image',
           src: '',
           objectFit: 'contain',
+          opacity: 1,
         }
       case 'rect':
         return {

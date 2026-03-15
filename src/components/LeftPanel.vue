@@ -48,7 +48,7 @@ const tools: { type: ToolType; label: string; icon: string; key: string }[] = [
   { type: 'select',  label: '选择',  icon: '↖',  key: 'V' },
   { type: 'text',    label: '文字',  icon: 'T',   key: 'T' },
   { type: 'barcode', label: '条码',  icon: '▦',   key: 'B' },
-  { type: 'image',   label: '图片',  icon: '🖼',  key: 'I' },
+   { type: 'image',   label: '标识',  icon: '🔣',  key: 'I' },
   { type: 'rect',    label: '矩形',  icon: '□',   key: 'R' },
   { type: 'line',    label: '直线',  icon: '╱',   key: 'L' },
 ]

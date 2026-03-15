@@ -60,4 +60,78 @@ export const SYMBOLS: SymbolItem[] = [
     name: 'Amazon Prime',
     svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 40"><text x="50" y="28" font-size="22" font-family="Arial" font-weight="bold" text-anchor="middle" fill="#FF9900">prime</text></svg>`,
   },
+  // 认证标志新增
+  {
+    id: 'ukca',
+    name: 'UKCA 标志',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text x="50" y="70" font-size="60" font-family="Arial" font-weight="bold" text-anchor="middle" fill="black">UKCA</text></svg>`,
+  },
+  {
+    id: 'fda',
+    name: 'FDA 标志',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="8" y="25" width="84" height="50" rx="8" fill="none" stroke="black" stroke-width="4"/><text x="50" y="62" font-size="36" font-family="Arial" font-weight="bold" text-anchor="middle" fill="black">FDA</text></svg>`,
+  },
+  // 代理人 REP 矩形标识
+  {
+    id: 'ec-rep-box',
+    name: 'EC REP 矩形',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 60"><rect x="2" y="2" width="54" height="56" fill="none" stroke="black" stroke-width="3"/><text x="29" y="38" font-size="32" font-family="Arial" font-weight="bold" text-anchor="middle" fill="black">EC</text></svg>`,
+  },
+  {
+    id: 'tur-rep-box',
+    name: 'TUR REP 矩形',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 60"><rect x="2" y="2" width="54" height="56" fill="none" stroke="black" stroke-width="3"/><text x="29" y="38" font-size="28" font-family="Arial" font-weight="bold" text-anchor="middle" fill="black">TUR</text></svg>`,
+  },
+  {
+    id: 'uk-rep-box',
+    name: 'UK REP 矩形',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 60"><rect x="2" y="2" width="54" height="56" fill="none" stroke="black" stroke-width="3"/><text x="29" y="38" font-size="32" font-family="Arial" font-weight="bold" text-anchor="middle" fill="black">UK</text></svg>`,
+  },
+  // GHS 危害象形图
+  {
+    id: 'ghs02-flame',
+    name: 'GHS 火焰 (易燃)',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" fill="none" stroke="#dd0000" stroke-width="3" rx="8"/><path d="M50 20 L70 50 L50 80 L30 50 Z" fill="#dd0000"/><path d="M50 28 L62 50 L50 72 L38 50 Z" fill="#ffffff"/></svg>`,
+  },
+  {
+    id: 'ghs07-exclamation',
+    name: 'GHS 感叹号 (刺激)',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" fill="none" stroke="#dd0000" stroke-width="3" rx="8"/><rect x="45" y="30" width="10" height="35" rx="3" fill="#dd0000"/><circle cx="50" cy="75" r="6" fill="#dd0000"/></svg>`,
+  },
+  {
+    id: 'ghs01-explosion',
+    name: 'GHS 爆炸',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" fill="none" stroke="#dd0000" stroke-width="3" rx="8"/><path d="M50 20 L58 45 L80 50 L58 55 L50 80 L42 55 L20 50 L42 45 Z" fill="#dd0000"/></svg>`,
+  },
+  {
+    id: 'ghs05-corrosion',
+    name: 'GHS 腐蚀',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" fill="none" stroke="#dd0000" stroke-width="3" rx="8"/><path d="M25 30 L65 30 L45 50 L65 70 L25 70" fill="none" stroke="#dd0000" stroke-width="8"/></svg>`,
+  },
+  {
+    id: 'ghs06-skull',
+    name: 'GHS 骷髅 (有毒)',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" fill="none" stroke="#dd0000" stroke-width="3" rx="8"/><ellipse cx="50" cy="45" rx="22" ry="20" fill="#dd0000"/><circle cx="38" cy="38" r="4" fill="white"/><circle cx="62" cy="38" r="4" fill="white"/><path d="M40 58 L60 58" stroke="white" stroke-width="3"/><path d="M35 65 L42 72 L58 72 L65 65" fill="none" stroke="white" stroke-width="3"/></svg>`,
+  },
+  {
+    id: 'ghs08-health',
+    name: 'GHS 健康危害',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" fill="none" stroke="#dd0000" stroke-width="3" rx="8"/><path d="M30 30 Q50 20 70 30 Q60 50 70 70 Q50 60 30 70 Q40 50 30 30 Z" fill="#dd0000"/><circle cx="50" cy="45" r="8" fill="white"/><circle cx="50" cy="45" r="4" fill="#dd0000"/></svg>`,
+  },
+  {
+    id: 'ghs09-environment',
+    name: 'GHS 环境危害',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" fill="none" stroke="#dd0000" stroke-width="3" rx="8"/><path d="M20 70 Q35 40 50 70 Q65 40 80 70" fill="none" stroke="#dd0000" stroke-width="6"/><ellipse cx="50" cy="45" rx="15" ry="8" fill="#dd0000"/></svg>`,
+  },
+  // 包装回收标识
+  {
+    id: 'french-triman',
+    name: '法国 Triman',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="40" r="30" fill="none" stroke="black" stroke-width="6"/><path d="M20 85 L50 35 L80 85" fill="none" stroke="black" stroke-width="8"/></svg>`,
+  },
+  {
+    id: 'spain-recicla',
+    name: '西班牙回收',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text x="50" y="45" font-size="18" font-family="Arial" font-weight="bold" text-anchor="middle" fill="black">RECICLA</text><text x="50" y="60" font-size="14" font-family="Arial" text-anchor="middle" fill="black">Al Amarillo</text></svg>`,
+  },
 ]

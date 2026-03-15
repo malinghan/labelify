@@ -60,6 +60,7 @@ export function renderImage(ctx: CanvasRenderingContext2D, el: ImageElement) {
     sy = (ih - sh) / 2
   }
 
+  ctx.globalAlpha = el.opacity ?? 1
   ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh)
   ctx.restore()
 }

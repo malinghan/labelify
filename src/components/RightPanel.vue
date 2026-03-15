@@ -10,9 +10,7 @@
     </template>
     <template v-else>
       <CanvasSizePanel />
-      <div class="empty-state">
-        <p>选择元素<br>以编辑属性</p>
-      </div>
+      <DataBindingPanel />
     </template>
   </div>
 </template>
@@ -28,6 +26,7 @@ import ImagePropsPanel from './panels/ImagePropsPanel.vue'
 import ShapePropsPanel from './panels/ShapePropsPanel.vue'
 import LayerOrderPanel from './panels/LayerOrderPanel.vue'
 import CanvasSizePanel from './panels/CanvasSizePanel.vue'
+import DataBindingPanel from './panels/DataBindingPanel.vue'
 
 const elementStore = useElementStore()
 const selectionStore = useSelectionStore()

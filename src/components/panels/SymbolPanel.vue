@@ -24,8 +24,8 @@ import { mmToPx } from '../../canvas/units'
 const elementStore = useElementStore()
 
 function insertSymbol(sym: typeof SYMBOLS[0]) {
-  const svgBlob = new Blob([sym.svg], { type: 'image/svg+xml' })
-  const url = URL.createObjectURL(svgBlob)
+  const base64 = btoa(unescape(encodeURIComponent(sym.svg)))
+  const dataUrl = `data:image/svg+xml;base64,${base64}`
   elementStore.add({
     id: crypto.randomUUID(),
     type: 'image',
@@ -37,8 +37,9 @@ function insertSymbol(sym: typeof SYMBOLS[0]) {
     locked: false,
     visible: true,
     zIndex: Date.now(),
-    src: url,
+    src: dataUrl,
     objectFit: 'contain',
+    opacity: 1,
   })
 }
 </script>

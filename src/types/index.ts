@@ -59,6 +59,7 @@ export interface ImageElement extends BaseElement {
   type: 'image'
   src: string
   objectFit: 'fill' | 'contain' | 'cover'
+  opacity: number  // 0~1, default 1
 }
 
 export interface RectElement extends BaseElement {
@@ -87,4 +88,12 @@ export interface SelectionState {
 
 export interface HistoryEntry {
   elements: LabelElement[]
+}
+
+export interface User {
+  id: string
+  username: string
+  email: string
+  createdAt: number
+  avatarColor: string
 }

@@ -13,6 +13,13 @@
         <option value="cover">Cover</option>
       </select>
     </div>
+    <div class="prop-grid">
+      <label>Opacity</label>
+      <div class="opacity-row">
+        <input type="range" min="0" max="1" step="0.01" :value="element.opacity ?? 1" @input="update('opacity', parseFloat(($event.target as HTMLInputElement).value))" />
+        <span>{{ Math.round((element.opacity ?? 1) * 100) }}%</span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -36,4 +43,7 @@ function update(key: string, value: unknown) {
 label { font-size: 11px; color: #888; }
 input, select { width: 100%; background: #2a2a2a; border: 1px solid #3a3a3a; border-radius: 3px; color: #e0e0e0; padding: 3px 5px; font-size: 12px; }
 input:focus, select:focus { outline: none; border-color: #1a73e8; }
+.opacity-row { display: flex; align-items: center; gap: 6px; }
+.opacity-row input[type=range] { flex: 1; }
+.opacity-row span { font-size: 11px; color: #888; width: 30px; text-align: right; }
 </style>
