@@ -47,6 +47,7 @@ export function useElementFactory() {
           barcodeType: 'code128',
           data: '123456789',
           showText: true,
+          platform: 'custom',
         }
       case 'image':
         return {

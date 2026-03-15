@@ -1,67 +1,136 @@
 import type { BarcodeElement } from '../../types'
+import JsBarcode from 'jsbarcode'
+import QRCode from 'qrcode'
 
-/**
- * Renders a barcode element as a placeholder.
- * Real barcode rendering requires a library like JsBarcode or qrcode.js.
- * For MVP we draw a visual placeholder with the data text.
- */
+// Cache rendered barcodes to avoid re-rendering every frame
+const barcodeCache = new Map<string, HTMLCanvasElement>()
+
+function cacheKey(el: BarcodeElement): string {
+  return `${el.barcodeType}:${el.data}:${el.showText}:${Math.round(el.width)}:${Math.round(el.height)}`
+}
+
+function renderLinearBarcode(el: BarcodeElement): HTMLCanvasElement | null {
+  const offscreen = document.createElement('canvas')
+  offscreen.width = Math.round(el.width)
+  offscreen.height = Math.round(el.height)
+
+  const formatMap: Record<string, string> = {
+    code128: 'CODE128',
+    code39: 'CODE39',
+    ean13: 'EAN13',
+    ean8: 'EAN8',
+    upca: 'UPC',
+  }
+  const format = formatMap[el.barcodeType] ?? 'CODE128'
+
+  try {
+    JsBarcode(offscreen, el.data, {
+      format,
+      displayValue: el.showText,
+      margin: 4,
+      width: 1.5,
+      height: Math.round(el.height * (el.showText ? 0.72 : 0.88)),
+      fontSize: Math.max(8, Math.round(el.height * 0.14)),
+      background: '#ffffff',
+      lineColor: '#000000',
+    })
+    return offscreen
+  } catch {
+    return null
+  }
+}
+
+// QR rendering is async; we store a promise and re-use the result
+const qrPromiseCache = new Map<string, Promise<HTMLCanvasElement | null>>()
+
+function renderQrAsync(el: BarcodeElement): Promise<HTMLCanvasElement | null> {
+  const key = cacheKey(el)
+  if (qrPromiseCache.has(key)) return qrPromiseCache.get(key)!
+
+  const size = Math.min(Math.round(el.width), Math.round(el.height))
+  const offscreen = document.createElement('canvas')
+  offscreen.width = size
+  offscreen.height = size
+
+  const p = QRCode.toCanvas(offscreen, el.data || ' ', {
+    width: size,
+    margin: 2,
+    color: { dark: '#000000', light: '#ffffff' },
+  })
+    .then(() => {
+      barcodeCache.set(key, offscreen)
+      return offscreen as HTMLCanvasElement
+    })
+    .catch(() => null)
+
+  qrPromiseCache.set(key, p)
+  return p
+}
+
 export function renderBarcode(ctx: CanvasRenderingContext2D, el: BarcodeElement) {
   ctx.save()
 
-  // Background
+  // White background
   ctx.fillStyle = '#ffffff'
   ctx.fillRect(el.x, el.y, el.width, el.height)
 
-  // Border
-  ctx.strokeStyle = '#cccccc'
-  ctx.lineWidth = 1
-  ctx.strokeRect(el.x, el.y, el.width, el.height)
+  const key = cacheKey(el)
 
   if (el.barcodeType === 'qrcode') {
-    // QR placeholder: grid pattern
-    const cellSize = Math.min(el.width, el.height) / 7
-    ctx.fillStyle = '#000000'
-    for (let row = 0; row < 7; row++) {
-      for (let col = 0; col < 7; col++) {
-        // Draw finder pattern corners
-        const isCorner =
-          (row < 3 && col < 3) ||
-          (row < 3 && col >= 4) ||
-          (row >= 4 && col < 3)
-        if (isCorner || (row === 3 && col === 3)) {
-          ctx.fillRect(
-            el.x + col * cellSize + (el.width - cellSize * 7) / 2,
-            el.y + row * cellSize + (el.height - cellSize * 7) / 2,
-            cellSize - 1,
-            cellSize - 1,
-          )
-        }
-      }
+    const cached = barcodeCache.get(key)
+    if (cached) {
+      const size = Math.min(el.width, el.height)
+      const ox = el.x + (el.width - size) / 2
+      const oy = el.y + (el.height - size) / 2
+      ctx.drawImage(cached, ox, oy, size, size)
+    } else {
+      // Trigger async render; draw placeholder until ready
+      renderQrAsync(el)
+      drawQrPlaceholder(ctx, el)
     }
   } else {
-    // Code128 placeholder: vertical bars
-    const barCount = 20
-    const barWidth = el.width / (barCount * 2)
-    ctx.fillStyle = '#000000'
-    for (let i = 0; i < barCount; i++) {
-      const barH = el.height * (el.showText ? 0.75 : 0.9)
-      ctx.fillRect(
-        el.x + i * barWidth * 2,
-        el.y + el.height * 0.05,
-        barWidth,
-        barH,
-      )
+    if (!barcodeCache.has(key)) {
+      const offscreen = renderLinearBarcode(el)
+      if (offscreen) {
+        barcodeCache.set(key, offscreen)
+      } else {
+        drawLinearPlaceholder(ctx, el)
+        ctx.restore()
+        return
+      }
     }
-  }
-
-  // Data text
-  if (el.showText && el.data) {
-    ctx.fillStyle = '#000000'
-    ctx.font = `${Math.max(8, el.height * 0.12)}px monospace`
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'bottom'
-    ctx.fillText(el.data, el.x + el.width / 2, el.y + el.height - 2, el.width - 4)
+    const cached = barcodeCache.get(key)!
+    ctx.drawImage(cached, el.x, el.y, el.width, el.height)
   }
 
   ctx.restore()
+}
+
+function drawQrPlaceholder(ctx: CanvasRenderingContext2D, el: BarcodeElement) {
+  ctx.strokeStyle = '#cccccc'
+  ctx.lineWidth = 1
+  ctx.strokeRect(el.x, el.y, el.width, el.height)
+  ctx.fillStyle = '#999'
+  ctx.font = '10px sans-serif'
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  ctx.fillText('QR', el.x + el.width / 2, el.y + el.height / 2)
+}
+
+function drawLinearPlaceholder(ctx: CanvasRenderingContext2D, el: BarcodeElement) {
+  ctx.strokeStyle = '#cccccc'
+  ctx.lineWidth = 1
+  ctx.strokeRect(el.x, el.y, el.width, el.height)
+  ctx.fillStyle = '#999'
+  ctx.font = '10px sans-serif'
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  ctx.fillText(el.data || '---', el.x + el.width / 2, el.y + el.height / 2)
+}
+
+/** Call this when barcode element data changes to invalidate cache */
+export function invalidateBarcodeCache(el: BarcodeElement) {
+  const key = cacheKey(el)
+  barcodeCache.delete(key)
+  qrPromiseCache.delete(key)
 }

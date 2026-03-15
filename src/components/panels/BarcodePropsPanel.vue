@@ -1,33 +1,81 @@
 <template>
   <div class="panel-section">
-    <div class="panel-title">Barcode</div>
+    <div class="panel-title">条码</div>
     <div class="prop-grid">
-      <label>Type</label>
+      <label>类型</label>
       <select :value="element.barcodeType" @change="update('barcodeType', ($event.target as HTMLSelectElement).value)">
         <option value="code128">Code 128</option>
+        <option value="code39">Code 39</option>
+        <option value="ean13">EAN-13</option>
+        <option value="ean8">EAN-8</option>
+        <option value="upca">UPC-A</option>
         <option value="qrcode">QR Code</option>
       </select>
-      <label>Data</label>
+      <label>平台</label>
+      <select :value="element.platform" @change="handlePlatformChange">
+        <option value="custom">自定义</option>
+        <option value="amazon-fnsku">亚马逊 FNSKU</option>
+        <option value="amazon-transparent">亚马逊透明计划</option>
+        <option value="ebay">eBay</option>
+        <option value="aliexpress">速卖通/Shopee</option>
+      </select>
+      <label>内容</label>
       <input type="text" :value="element.data" @input="update('data', ($event.target as HTMLInputElement).value)" />
     </div>
     <div class="prop-row">
       <label>
         <input type="checkbox" :checked="element.showText" @change="update('showText', ($event.target as HTMLInputElement).checked)" />
-        Show text
+        显示文字
       </label>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { BarcodeElement } from '../../types'
+import type { BarcodeElement, BarcodePlatform } from '../../types'
 import { useElementStore } from '../../store/element'
+import { mmToPx } from '../../canvas/units'
 
 const props = defineProps<{ element: BarcodeElement }>()
 const elementStore = useElementStore()
 
 function update(key: string, value: unknown) {
   elementStore.update(props.element.id, { [key]: value } as Partial<BarcodeElement>)
+}
+
+function handlePlatformChange(e: Event) {
+  const platform = (e.target as HTMLSelectElement).value as BarcodePlatform
+  const updates: Partial<BarcodeElement> = { platform }
+
+  // Apply platform-specific presets
+  switch (platform) {
+    case 'amazon-fnsku':
+      updates.barcodeType = 'code128'
+      updates.width = mmToPx(57)
+      updates.height = mmToPx(32)
+      updates.showText = true
+      break
+    case 'amazon-transparent':
+      updates.barcodeType = 'qrcode'
+      updates.width = mmToPx(25)
+      updates.height = mmToPx(25)
+      updates.showText = false
+      break
+    case 'ebay':
+      updates.barcodeType = 'ean13'
+      updates.width = mmToPx(37)
+      updates.height = mmToPx(25)
+      updates.showText = true
+      break
+    case 'aliexpress':
+      updates.barcodeType = 'code128'
+      updates.width = mmToPx(40)
+      updates.height = mmToPx(20)
+      updates.showText = true
+      break
+  }
+
+  elementStore.update(props.element.id, updates)
 }
 </script>
 

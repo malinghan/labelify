@@ -8,9 +8,12 @@
       <ShapePropsPanel v-else-if="selectedElement.type === 'rect' || selectedElement.type === 'line'" :element="selectedElement" />
       <LayerOrderPanel :element="selectedElement" />
     </template>
-    <div v-else class="empty-state">
-      <p>Select an element<br>to edit properties</p>
-    </div>
+    <template v-else>
+      <CanvasSizePanel />
+      <div class="empty-state">
+        <p>选择元素<br>以编辑属性</p>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -24,6 +27,7 @@ import BarcodePropsPanel from './panels/BarcodePropsPanel.vue'
 import ImagePropsPanel from './panels/ImagePropsPanel.vue'
 import ShapePropsPanel from './panels/ShapePropsPanel.vue'
 import LayerOrderPanel from './panels/LayerOrderPanel.vue'
+import CanvasSizePanel from './panels/CanvasSizePanel.vue'
 
 const elementStore = useElementStore()
 const selectionStore = useSelectionStore()
@@ -49,7 +53,7 @@ const selectedElement = computed(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  height: 120px;
   text-align: center;
   color: #555;
   font-size: 12px;

@@ -1,12 +1,12 @@
 <template>
   <div class="panel-section">
-    <div class="panel-title">Text</div>
+    <div class="panel-title">文字</div>
     <div class="prop-col">
-      <label>Content</label>
+      <label>内容</label>
       <textarea :value="element.content" @input="update('content', ($event.target as HTMLTextAreaElement).value)" rows="3" />
     </div>
     <div class="prop-grid">
-      <label>Font</label>
+      <label>字体</label>
       <select :value="element.fontFamily" @change="update('fontFamily', ($event.target as HTMLSelectElement).value)">
         <option>Arial</option>
         <option>Helvetica</option>
@@ -14,25 +14,25 @@
         <option>Courier New</option>
         <option>Georgia</option>
       </select>
-      <label>Size</label>
+      <label>字号</label>
       <input type="number" :value="element.fontSize" @change="update('fontSize', +($event.target as HTMLInputElement).value)" min="6" max="200" />
-      <label>Color</label>
+      <label>颜色</label>
       <input type="color" :value="element.color" @input="update('color', ($event.target as HTMLInputElement).value)" />
-      <label>Align</label>
+      <label>对齐</label>
       <select :value="element.align" @change="update('align', ($event.target as HTMLSelectElement).value)">
-        <option value="left">Left</option>
-        <option value="center">Center</option>
-        <option value="right">Right</option>
+        <option value="left">左对齐</option>
+        <option value="center">居中</option>
+        <option value="right">右对齐</option>
       </select>
     </div>
     <div class="prop-row">
       <label>
         <input type="checkbox" :checked="element.fontWeight === 'bold'" @change="update('fontWeight', ($event.target as HTMLInputElement).checked ? 'bold' : 'normal')" />
-        Bold
+        加粗
       </label>
       <label>
         <input type="checkbox" :checked="element.fontStyle === 'italic'" @change="update('fontStyle', ($event.target as HTMLInputElement).checked ? 'italic' : 'normal')" />
-        Italic
+        斜体
       </label>
     </div>
   </div>

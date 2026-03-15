@@ -12,19 +12,23 @@
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "jsbarcode": "^3.12.3",
     "pinia": "^2.1.7",
-    "vue": "^3.4.0"
+    "qrcode": "^1.5.4",
+    "vue": "^3.4.0",
+    "vue-router": "^4.6.4"
   },
   "devDependencies": {
+    "@playwright/test": "^1.41.0",
+    "@types/qrcode": "^1.5.6",
     "@vitejs/plugin-vue": "^5.0.0",
     "@vue/tsconfig": "^0.5.1",
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1",
     "typescript": "^5.3.0",
     "vite": "^5.0.0",
     "vitest": "^1.2.0",
-    "vue-tsc": "^2.0.0",
-    "@playwright/test": "^1.41.0",
-    "autoprefixer": "^10.4.17",
-    "postcss": "^8.4.35",
-    "tailwindcss": "^3.4.1"
+    "vue-tsc": "^2.0.0"
   }
 }

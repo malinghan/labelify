@@ -1,9 +1,9 @@
 <template>
   <div class="panel-section">
-    <div class="panel-title">Layer Order</div>
+    <div class="panel-title">图层顺序</div>
     <div class="layer-buttons">
-      <button @click="elementStore.bringForward(element.id)" title="Bring Forward">↑ Forward</button>
-      <button @click="elementStore.sendBackward(element.id)" title="Send Backward">↓ Backward</button>
+      <button @click="elementStore.bringForward(element.id)" title="上移一层">↑ 上移</button>
+      <button @click="elementStore.sendBackward(element.id)" title="下移一层">↓ 下移</button>
     </div>
     <div class="z-index-label">z-index: {{ element.zIndex }}</div>
   </div>

@@ -2,16 +2,16 @@
   <div class="top-toolbar">
     <!-- File actions -->
     <div class="toolbar-group">
-      <button @click="newLabel" title="New">New</button>
-      <button @click="exportPng()" title="Export PNG">Export PNG</button>
+      <button @click="newLabel" title="新建标签">新建</button>
+      <button @click="exportPng()" title="导出图片">导出图片</button>
     </div>
 
     <div class="toolbar-divider" />
 
     <!-- History -->
     <div class="toolbar-group">
-      <button @click="elementStore.undo()" :disabled="!canUndo" title="Undo (⌘Z)">↩</button>
-      <button @click="elementStore.redo()" :disabled="!canRedo" title="Redo (⌘⇧Z)">↪</button>
+      <button @click="elementStore.undo()" :disabled="!canUndo" title="撤销 (⌘Z)">↩</button>
+      <button @click="elementStore.redo()" :disabled="!canRedo" title="重做 (⌘⇧Z)">↪</button>
     </div>
 
     <div class="toolbar-divider" />
@@ -21,7 +21,7 @@
       <button @click="zoomOut">−</button>
       <span class="zoom-label">{{ zoomPercent }}%</span>
       <button @click="zoomIn">+</button>
-      <button @click="fitScreen" title="Fit to screen">Fit</button>
+      <button @click="fitScreen" title="适应屏幕">适应</button>
     </div>
 
     <div class="toolbar-divider" />
@@ -36,15 +36,24 @@
 
     <!-- Preview mode -->
     <div class="toolbar-group">
-      <button :class="{ active: previewMode }" @click="dataBindingStore.setPreviewMode(!previewMode)">
-        {{ previewMode ? '● Preview' : '○ Preview' }}
+      <button :class="{ active: previewMode }" @click="dataBindingStore.setPreviewMode(!previewMode)" title="预览数据绑定">
+        {{ previewMode ? '● 预览' : '○ 预览' }}
       </button>
     </div>
+
+    <div class="toolbar-divider" />
+
+    <!-- Print -->
+    <div class="toolbar-group">
+      <button @click="showPrint = true" title="打印">🖨 打印</button>
+    </div>
+
+    <PrintSettingsModal v-if="showPrint" @close="showPrint = false" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useCanvasStore } from '../store/canvas'
 import { useElementStore } from '../store/element'
 import { useSelectionStore } from '../store/selection'
@@ -52,6 +61,7 @@ import { useDataBindingStore } from '../store/dataBinding'
 import { useExport } from '../composables/useExport'
 import { alignElements } from '../canvas/align'
 import type { AlignDirection } from '../canvas/align'
+import PrintSettingsModal from './PrintSettingsModal.vue'
 
 const canvasStore = useCanvasStore()
 const elementStore = useElementStore()
@@ -59,6 +69,7 @@ const selectionStore = useSelectionStore()
 const dataBindingStore = useDataBindingStore()
 const { exportPng } = useExport()
 
+const showPrint = ref(false)
 const canUndo = computed(() => elementStore.past.length > 0)
 const canRedo = computed(() => elementStore.future.length > 0)
 const zoomPercent = computed(() => Math.round(canvasStore.viewport.zoom * 100))
@@ -66,16 +77,16 @@ const selectedIds = computed(() => selectionStore.selectedIds)
 const previewMode = computed(() => dataBindingStore.previewMode)
 
 const alignDirs: { key: AlignDirection; label: string; icon: string }[] = [
-  { key: 'left',   label: 'Align left',   icon: '⬛▪' },
-  { key: 'center', label: 'Align center', icon: '▪⬛▪' },
-  { key: 'right',  label: 'Align right',  icon: '▪⬛' },
-  { key: 'top',    label: 'Align top',    icon: '⬛↑' },
-  { key: 'middle', label: 'Align middle', icon: '⬛↕' },
-  { key: 'bottom', label: 'Align bottom', icon: '⬛↓' },
+  { key: 'left',   label: '左对齐',   icon: '⬛▪' },
+  { key: 'center', label: '水平居中', icon: '▪⬛▪' },
+  { key: 'right',  label: '右对齐',  icon: '▪⬛' },
+  { key: 'top',    label: '顶对齐',  icon: '⬛↑' },
+  { key: 'middle', label: '垂直居中', icon: '⬛↕' },
+  { key: 'bottom', label: '底对齐',  icon: '⬛↓' },
 ]
 
 function newLabel() {
-  if (elementStore.elements.length > 0 && !confirm('Clear canvas?')) return
+  if (elementStore.elements.length > 0 && !confirm('清空画布？')) return
   elementStore.clear()
   selectionStore.clearSelection()
 }

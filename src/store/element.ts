@@ -99,6 +99,12 @@ export const useElementStore = defineStore('element', () => {
     elements.value = []
   }
 
+  function loadSnapshot(els: LabelElement[]) {
+    elements.value = JSON.parse(JSON.stringify(els))
+    past.value = []
+    future.value = []
+  }
+
   return {
     elements,
     sortedElements,
@@ -114,5 +120,6 @@ export const useElementStore = defineStore('element', () => {
     undo,
     redo,
     clear,
+    loadSnapshot,
   }
 })

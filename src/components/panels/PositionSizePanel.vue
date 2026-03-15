@@ -1,24 +1,24 @@
 <template>
   <div class="panel-section">
-    <div class="panel-title">Position & Size</div>
+    <div class="panel-title">位置与尺寸</div>
     <div class="prop-grid">
       <label>X</label>
       <input type="number" :value="round(pxToMm(element.x))" @change="update('x', mmToPx(+($event.target as HTMLInputElement).value))" />
       <label>Y</label>
       <input type="number" :value="round(pxToMm(element.y))" @change="update('y', mmToPx(+($event.target as HTMLInputElement).value))" />
-      <label>W</label>
+      <label>宽</label>
       <input type="number" :value="round(pxToMm(element.width))" @change="update('width', mmToPx(+($event.target as HTMLInputElement).value))" />
-      <label>H</label>
+      <label>高</label>
       <input type="number" :value="round(pxToMm(element.height))" @change="update('height', mmToPx(+($event.target as HTMLInputElement).value))" />
     </div>
     <div class="prop-row">
       <label>
         <input type="checkbox" :checked="element.locked" @change="update('locked', ($event.target as HTMLInputElement).checked)" />
-        Locked
+        锁定
       </label>
       <label>
         <input type="checkbox" :checked="element.visible" @change="update('visible', ($event.target as HTMLInputElement).checked)" />
-        Visible
+        显示
       </label>
     </div>
   </div>

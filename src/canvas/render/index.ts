@@ -1,5 +1,4 @@
 import type { LabelElement, Viewport, LabelSize, DataBinding } from '../../types'
-import { worldToScreen } from '../transform'
 import { mmToPx } from '../units'
 import { renderText } from './renderText'
 import { renderBarcode } from './renderBarcode'

@@ -1,19 +1,19 @@
 <template>
   <div class="panel-section">
-    <div class="panel-title">Shape</div>
+    <div class="panel-title">形状</div>
     <div class="prop-grid">
       <template v-if="element.type === 'rect'">
-        <label>Fill</label>
+        <label>填充</label>
         <input type="color" :value="(element as RectElement).fillColor" @input="update('fillColor', ($event.target as HTMLInputElement).value)" />
-        <label>Stroke</label>
+        <label>边框</label>
         <input type="color" :value="(element as RectElement).strokeColor" @input="update('strokeColor', ($event.target as HTMLInputElement).value)" />
-        <label>Width</label>
+        <label>宽度</label>
         <input type="number" :value="(element as RectElement).strokeWidth" @change="update('strokeWidth', +($event.target as HTMLInputElement).value)" min="0" max="20" />
       </template>
       <template v-else>
-        <label>Color</label>
+        <label>颜色</label>
         <input type="color" :value="(element as LineElement).strokeColor" @input="update('strokeColor', ($event.target as HTMLInputElement).value)" />
-        <label>Width</label>
+        <label>宽度</label>
         <input type="number" :value="(element as LineElement).strokeWidth" @change="update('strokeWidth', +($event.target as HTMLInputElement).value)" min="1" max="20" />
       </template>
     </div>

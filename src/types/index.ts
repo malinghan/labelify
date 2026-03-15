@@ -43,11 +43,16 @@ export interface TextElement extends BaseElement {
   align: 'left' | 'center' | 'right'
 }
 
+export type BarcodeType = 'code128' | 'code39' | 'ean13' | 'ean8' | 'upca' | 'qrcode'
+
+export type BarcodePlatform = 'custom' | 'amazon-fnsku' | 'amazon-transparent' | 'ebay' | 'aliexpress'
+
 export interface BarcodeElement extends BaseElement {
   type: 'barcode'
-  barcodeType: 'code128' | 'qrcode'
+  barcodeType: BarcodeType
   data: string
   showText: boolean
+  platform: BarcodePlatform
 }
 
 export interface ImageElement extends BaseElement {
